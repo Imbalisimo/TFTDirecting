@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TFTDirecting.Database;
 using TFTDirecting.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,7 +33,6 @@ builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IActorService, ActorService>();
 builder.Services.AddScoped<IActorRepository, ActorRepository>();
-
 
 var app = builder.Build();
 
