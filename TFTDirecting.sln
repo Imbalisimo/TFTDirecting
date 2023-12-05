@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFTDirecting", "TFTDirecting\TFTDirecting.csproj", "{3FE24BA4-4599-4433-8D60-870E829DA431}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3FE24BA4-4599-4433-8D60-870E829DA431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FE24BA4-4599-4433-8D60-870E829DA431}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FE24BA4-4599-4433-8D60-870E829DA431}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FE24BA4-4599-4433-8D60-870E829DA431}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B828A9FA-8271-4734-A8AD-7E9419ED4258}
+	EndGlobalSection
+EndGlobal
