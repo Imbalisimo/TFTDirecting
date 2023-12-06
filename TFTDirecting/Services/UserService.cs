@@ -9,13 +9,16 @@ namespace TFTDirecting.Services
         private readonly IUserRepository _userRepository;
         public UserService(IUserRepository userRepository)
         {
-
             _userRepository = userRepository;
-
         }
         public void AddUser(AddUserCommand command)
         {
             _userRepository.AddUser(command);
+        }
+
+        public UserDto GetUserByCredentials(string username, string password)
+        {
+            throw new NotImplementedException();
         }
 
         public UserDto GetUserData(int actorId)

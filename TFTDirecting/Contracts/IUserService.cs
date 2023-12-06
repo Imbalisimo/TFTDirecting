@@ -7,6 +7,7 @@ namespace TFTDirecting.Contracts
     public interface IUserService
     {
         UserDto GetUserData(int actorId);
+        UserDto GetUserByCredentials(string username, string password);
         void AddUser(AddUserCommand command);
         void UpdateUserData(int actorId, UpdateUserCommand command);
     }

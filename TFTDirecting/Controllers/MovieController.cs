@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TFTDirecting.Commands;
 using TFTDirecting.Contracts;
+using TFTDirecting.CustomAttributes;
 using TFTDirecting.Database;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -16,28 +17,29 @@ namespace TFTDirecting.Controllers
             _movieService = movieService;
         }
 
-        //[Actor]
+        [RoleAuthorize(Role.Actor)]
         [HttpGet()] // 2. Glumac; f. Pregled svih filmova koji pripadaju pojedinom žanru; i. Filtriranje prema žanru/datumu početka/datumu kraju
         public IActionResult GetMovies([FromBody] MovieFilter filter)
         {
             return Ok(_movieService.GetMovies(filter));
         }
 
-        //[Director]
+        [RoleAuthorize(Role.Director)]
         [HttpGet("{movieId}")] // 1. Direktor; b. Pregled pojedinog Filma
         public IActionResult GetMovie(int movieId)
         {
             return Ok(_movieService.GetMovieById(movieId));
         }
 
+        [RoleAuthorize(Role.Actor)]
         //[HttpGet("director/{directorId}")] // 1. Direktor; a. Pregled svih mojih filmova; ii. Filtriranje filma prema žanrovima/budžetu/datumu početka/datumu kraja
-                                           // 2. Glumac; e. Pregled svih filmova od pojedinog direktora; i. Filtriranje prema žanru/datumu početka/datumu kraja
+        // 2. Glumac; e. Pregled svih filmova od pojedinog direktora; i. Filtriranje prema žanru/datumu početka/datumu kraja
         public IActionResult GetMoviesByDirector(int directorId, [FromBody] MovieFilter filter)
         {
             return Ok(_movieService.GetMoviesByDirector(directorId, filter));
         }
 
-        //[Director]
+        [RoleAuthorize(Role.Director)]
         [HttpPost] // 1. Direktor; c. Kreiranje Filma
         public IActionResult AddNewMovie([FromBody] AddMovieCommand command)
         {
@@ -45,7 +47,7 @@ namespace TFTDirecting.Controllers
             return Ok();
         }
 
-        //[Director]
+        [RoleAuthorize(Role.Director)]
         [HttpPut("{movieId}")] // 1. Direktor; e. Ažuriranje Filma
         public IActionResult UpdateMovie(int movieId, [FromBody] UpdateMovieCommand command)
         {
@@ -53,7 +55,7 @@ namespace TFTDirecting.Controllers
             return Ok();
         }
 
-        //[Director]
+        [RoleAuthorize(Role.Director)]
         [HttpDelete("{movieId}")] // 1. Direktor; d. Brisanje Filma
         public IActionResult Delete(int movieId)
         {

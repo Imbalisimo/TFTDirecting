@@ -1,6 +1,7 @@
 ﻿using TFTDirecting.Commands;
 using TFTDirecting.Contracts;
 using TFTDirecting.Database;
+using TFTDirecting.Dtos;
 
 namespace TFTDirecting.Repository
 {
@@ -11,7 +12,12 @@ namespace TFTDirecting.Repository
             throw new NotImplementedException();
         }
 
-        public User GetUserData(int actorId)
+        public UserDto GetUserByCredentials(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserDto GetUserData(int actorId)
         {
             throw new NotImplementedException();
         }

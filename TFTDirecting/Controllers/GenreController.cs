@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TFTDirecting.Commands;
 using TFTDirecting.Contracts;
+using TFTDirecting.CustomAttributes;
 using TFTDirecting.Database;
 
 namespace TFTDirecting.Controllers
@@ -16,7 +17,7 @@ namespace TFTDirecting.Controllers
             _genreService = genreService;
         }
 
-        //[SuperAdmin]
+        [RoleAuthorize(Role.SuperAdmin)]
         [HttpPost()] // 3. Super administrator; a. Kreiranje žanrova
         public IActionResult CreateNewGenre([FromBody] CreateGenreCommand command)
         {
@@ -24,7 +25,7 @@ namespace TFTDirecting.Controllers
             return Ok();
         }
 
-        //[SuperAdmin]
+        [RoleAuthorize(Role.SuperAdmin)]
         [HttpPut("{genreId}")] // 3. Super administrator; c. Ažuriranje žanrova
         public IActionResult UpdateGenre(int genreId, [FromBody] UpdateGenreCommand command)
         {
@@ -32,7 +33,7 @@ namespace TFTDirecting.Controllers
             return Ok();
         }
 
-        //[SuperAdmin]
+        [RoleAuthorize(Role.SuperAdmin)]
         [HttpDelete("{genreId}")] // 3. Super administrator; b. Brisanje žanrova
         public IActionResult DeleteGenre(int genreId)
         {

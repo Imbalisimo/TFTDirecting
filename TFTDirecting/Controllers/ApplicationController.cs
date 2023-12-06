@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TFTDirecting.Commands;
 using TFTDirecting.Contracts;
+using TFTDirecting.CustomAttributes;
 
 namespace TFTDirecting.Controllers
 {
@@ -15,28 +16,28 @@ namespace TFTDirecting.Controllers
             _applicationService = applicationService;
         }
 
-        //[Director]
+        [RoleAuthorize(Role.Director)]
         [HttpGet("{movieId}")] // 1. Direktor; a. Pregled svih mojih filmova; i. Pregled svih glumaca koji su se prijavili na taj film
         public IActionResult GetActorsAppliedForMovie(int movieId)
         {
             return Ok(_applicationService.ActorsAppliedForMovie(movieId));
         }
 
-        //[Actor]
+        [RoleAuthorize(Role.Actor)]
         [HttpGet("{actorId}")] // 2. Glumac; c. Pregled svih filmova; i. Na kojima je moja pozivnica
         public IActionResult GetMoviesInvites(int actorId)
         {
             return Ok(_applicationService.GetMoviesInvitesForActor(actorId));
         }
 
-        //[Actor]
+        [RoleAuthorize(Role.Actor)]
         [HttpGet("{actorId}")] // 2. Glumac; c. Pregled svih filmova; ii. Na kojima je glumac moja prijava ???? valjda?
         public IActionResult GetMoviesApplications(int actorId)
         {
             return Ok(_applicationService.GetMoviesApplicationsForActor(actorId));
         }
 
-        //[Actor]
+        [RoleAuthorize(Role.Actor)]
         [HttpGet("{actorId}")] // 2. Glumac; c. Pregled svih filmova; iii. Na kojima je moja uloga osigurana
         public IActionResult GetMoviesWithApprovedRoles(int actorId)
         {
