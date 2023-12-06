@@ -35,7 +35,9 @@ builder.Logging.AddProvider(new CustomFileLoggerProvider(new CustomFileLoggerCon
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
