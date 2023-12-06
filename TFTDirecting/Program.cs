@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TFTDirecting.Contracts;
 using TFTDirecting.Database;
 using TFTDirecting.Logging;
+using TFTDirecting.Repository;
+using TFTDirecting.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +34,8 @@ builder.Logging.AddProvider(new CustomFileLoggerProvider(new CustomFileLoggerCon
 
 builder.Services.AddMvc();
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IActorService, ActorService>();
-builder.Services.AddScoped<IActorRepository, ActorRepository>();
+builder.Services.AddScoped<IGenreService, GenreService>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
 var app = builder.Build();
 
