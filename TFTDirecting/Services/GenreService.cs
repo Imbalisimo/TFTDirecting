@@ -15,7 +15,7 @@ namespace TFTDirecting.Services
 
         public void Create(CreateGenreCommand command)
         {
-            _genreRepository.Create(command.ToGenre(0));
+            _genreRepository.Create(command);
         }
 
         public void Delete(int genreId)
@@ -26,7 +26,7 @@ namespace TFTDirecting.Services
 
         public void Update(int genreId, UpdateGenreCommand command)
         {
-            _genreRepository.Update(command.ToGenre(genreId));
+            _genreRepository.Update(command);
         }
     }
 }

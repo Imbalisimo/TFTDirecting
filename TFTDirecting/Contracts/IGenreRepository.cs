@@ -6,8 +6,8 @@ namespace TFTDirecting.Contracts
     public interface IGenreRepository
     {
         Genre GetById(int genreId);
-        void Create(Genre genre);
-        void Update(Genre genre);
+        void Create(CreateGenreCommand genre);
+        void Update(UpdateGenreCommand genre);
         void Delete(Genre genre);
     }
 }

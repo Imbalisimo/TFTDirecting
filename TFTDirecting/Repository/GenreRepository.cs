@@ -6,12 +6,7 @@ namespace TFTDirecting.Repository
 {
     public class GenreRepository : IGenreRepository
     {
-        public Genre GetById(int genreId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Create(Genre genre)
+        public void Create(CreateGenreCommand genre)
         {
             throw new NotImplementedException();
         }
@@ -21,7 +16,12 @@ namespace TFTDirecting.Repository
             throw new NotImplementedException();
         }
 
-        public void Update(Genre genre)
+        public Genre GetById(int genreId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(UpdateGenreCommand genre)
         {
             throw new NotImplementedException();
         }
