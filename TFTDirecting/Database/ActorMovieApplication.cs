@@ -17,6 +17,7 @@ namespace TFTDirecting.Database
         [ForeignKey("ActorId")]
         public User Actor { get; set; }
 
-        public bool IsAccepted { get; set; }
+        public bool IsAcceptedByActor { get; set; }
+        public bool IsAcceptedByDirector { get; set; }
     }
 }
