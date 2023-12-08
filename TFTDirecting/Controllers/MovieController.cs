@@ -32,7 +32,7 @@ namespace TFTDirecting.Controllers
         }
 
         [RoleAuthorize(Role.Actor)]
-        //[HttpGet("director/{directorId}")] // 1. Direktor; a. Pregled svih mojih filmova; ii. Filtriranje filma prema žanrovima/budžetu/datumu početka/datumu kraja
+        [HttpGet("director/{directorId}")] // 1. Direktor; a. Pregled svih mojih filmova; ii. Filtriranje filma prema žanrovima/budžetu/datumu početka/datumu kraja
         // 2. Glumac; e. Pregled svih filmova od pojedinog direktora; i. Filtriranje prema žanru/datumu početka/datumu kraja
         public IActionResult GetMoviesByDirector(int directorId, [FromBody] MovieFilter filter)
         {

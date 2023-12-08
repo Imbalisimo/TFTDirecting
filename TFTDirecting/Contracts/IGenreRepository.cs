@@ -1,13 +1,14 @@
 ﻿using TFTDirecting.Commands;
 using TFTDirecting.Database;
+using TFTDirecting.Dtos;
 
 namespace TFTDirecting.Contracts
 {
     public interface IGenreRepository
     {
-        Genre GetById(int genreId);
+        GenreDto GetById(int genreId);
         void Create(CreateGenreCommand genre);
-        void Update(UpdateGenreCommand genre);
+        void Update(int genreId, UpdateGenreCommand genre);
         void Delete(Genre genre);
     }
 }

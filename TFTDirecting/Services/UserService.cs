@@ -18,12 +18,12 @@ namespace TFTDirecting.Services
 
         public UserDto GetUserByCredentials(string username, string password)
         {
-            throw new NotImplementedException();
+            return _userRepository.GetUserByCredentials(username, password);
         }
 
         public UserDto GetUserData(int actorId)
         {
-            return new UserDto(_userRepository.GetUserData(actorId));
+            return _userRepository.GetUserData(actorId);
         }
 
         public void UpdateUserData(int actorId, UpdateUserCommand command)

@@ -14,5 +14,11 @@ namespace TFTDirecting.Commands
                 Name = Name,
             };
         }
+
+        public void UpdateGenre(Genre? genre)
+        {
+            if (genre == null) return;
+            genre.Name = Name;
+        }
     }
 }

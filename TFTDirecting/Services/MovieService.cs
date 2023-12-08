@@ -1,6 +1,7 @@
 ﻿using TFTDirecting.Commands;
 using TFTDirecting.Contracts;
 using TFTDirecting.Dtos;
+using TFTDirecting.Repository;
 
 namespace TFTDirecting.Services
 {
@@ -19,7 +20,8 @@ namespace TFTDirecting.Services
 
         public void Delete(int movieId)
         {
-            _movieRepository.Delete(movieId);
+            var movie = _movieRepository.GetMovieById(movieId);
+            _movieRepository.Delete(movie.ToMovie());
         }
 
         public IEnumerable<MovieDto> GetMoviesByDirector(int directorId, MovieFilter filter)

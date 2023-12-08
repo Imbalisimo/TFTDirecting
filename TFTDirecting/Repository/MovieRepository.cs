@@ -1,39 +1,103 @@
 ﻿using TFTDirecting.Commands;
 using TFTDirecting.Contracts;
+using TFTDirecting.Database;
 using TFTDirecting.Dtos;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TFTDirecting.Repository
 {
     public class MovieRepository : IMovieRepository
     {
-        public void Add(AddMovieCommand command)
+        private readonly IConfiguration _config;
+        public MovieRepository(IConfiguration config)
         {
-            throw new NotImplementedException();
+            _config = config;
         }
 
-        public void Delete(int movieId)
+        public void Add(AddMovieCommand command)
         {
-            throw new NotImplementedException();
+            using (var db = new MoviesDbContext(_config))
+            {
+                db.Movies.Add(command.ToMovie(0));
+                db.SaveChanges();
+            }
+        }
+
+        public void Delete(Movie movie)
+        {
+            using (var db = new MoviesDbContext(_config))
+            {
+                db.Movies.Remove(movie);
+                db.SaveChanges();
+            }
         }
 
         public MovieDto GetMovieById(int movieId)
         {
-            throw new NotImplementedException();
+            using (var db = new MoviesDbContext(_config))
+            {
+                var u = (from movie in db.Movies
+                         where movie.Id == movieId
+                         select movie).SingleOrDefault();
+
+                return new MovieDto(u);
+            }
         }
 
         public IEnumerable<MovieDto> GetMovies(MovieFilter filter)
         {
-            throw new NotImplementedException();
+            using (var db = new MoviesDbContext(_config))
+            {
+                return (from genre in db.Genres
+                        where genre.Id == filter.Genre
+                        from movie in db.Movies
+                        where filter.Budget != null ? movie.Budget == filter.Budget : true &&
+                           filter.StartingDate != null ? movie.EndingDate >= filter.StartingDate : true &&
+                           filter.EndingDate != null ? movie.EndingDate <= filter.EndingDate : true &&
+                           filter.Genre != null ? movie.Genres.Contains(genre) : true
+                        select new MovieDto(movie)).AsEnumerable<MovieDto>();
+                //movie.Genres.Contains(genre)
+                //select new MovieDto
+                //{
+                //    Id = movie.Id,
+                //    Name = movie.Name,
+                //    Description = movie.Description,
+                //    Duration = movie.Duration,
+                //    Budget = movie.Budget,
+                //    DirectorId = movie.DirectorId,
+                //    EndingDate = movie.EndingDate,
+                //    StartingDate = movie.StartingDate
+                //}).AsEnumerable<MovieDto>();
+            }
         }
 
         public IEnumerable<MovieDto> GetMoviesByDirector(int directorId, MovieFilter filter)
         {
-            throw new NotImplementedException();
+            using (var db = new MoviesDbContext(_config))
+            {
+                return (from genre in db.Genres
+                        where genre.Id == filter.Genre
+                        from movie in db.Movies
+                        where filter.Budget != null ? movie.Budget == filter.Budget : true &&
+                           filter.StartingDate != null ? movie.EndingDate >= filter.StartingDate: true &&
+                           filter.EndingDate != null ? movie.EndingDate <= filter.EndingDate : true &&
+                           filter.Genre != null ? movie.Genres.Contains(genre) : true &&
+                           movie.DirectorId == directorId
+                        select new MovieDto(movie)).AsEnumerable<MovieDto>();
+            }
         }
 
         public void Update(int movieId, UpdateMovieCommand command)
         {
-            throw new NotImplementedException();
+            using (var db = new MoviesDbContext(_config))
+            {
+                var updatingMovie = (from movie in db.Movies
+                                    where movie.Id == movieId
+                                    select movie).SingleOrDefault();
+
+                command.UpdateMovie(updatingMovie);
+                db.SaveChanges();
+            }
         }
     }
 }

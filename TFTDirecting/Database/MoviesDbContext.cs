@@ -5,10 +5,16 @@ namespace TFTDirecting.Database
 {
     public class MoviesDbContext: DbContext
     {
+        public DbSet<User> Users { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<ActorMovieApplication> ActorMovieApplications { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+
+
         private IConfiguration _config;
 
-        public MoviesDbContext(DbContextOptions<MoviesDbContext> options, IConfiguration config)
-            : base(options)
+        public MoviesDbContext(IConfiguration config)
+            : base()
         {
             _config = config;
             Database.EnsureCreated();
@@ -16,14 +22,18 @@ namespace TFTDirecting.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // TO-DO: add connection string to appsettings
-            //optionsBuilder.UseSQL(_config["connectionString""server=localhost;database=library;user=user;password=password"]);
+            optionsBuilder.UseSqlServer(_config["ConnectionStrings:connectionString"]);
+            base.OnConfiguring(optionsBuilder);
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Movie> Movies { get; set; }
-        public DbSet<ActorMovieApplication> ActorMovieApplications { get; set; }
-        public DbSet<Genre> Genres { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Movie>()
+                .HasOne(e => e.Director)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
 
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

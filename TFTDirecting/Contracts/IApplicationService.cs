@@ -5,9 +5,9 @@ namespace TFTDirecting.Contracts
 {
     public interface IApplicationService
     {
-        UserDto ActorsAppliedForMovie(int movieId);
-        InviteDto GetMoviesInvitesForActor(int actorId);
-        InviteDto GetMoviesApplicationsForActor(int actorId);
-        InviteDto GetMoviesWithApprovedRoles(int actorId);
+        IEnumerable<UserDto> ActorsAppliedForMovie(int movieId);
+        IEnumerable<InviteDto> GetMoviesInvitesForActor(int actorId);
+        IEnumerable<InviteDto> GetMoviesApplicationsForActor(int actorId);
+        IEnumerable<MovieDto> GetMoviesWithApprovedRoles(int actorId);
     }
 }

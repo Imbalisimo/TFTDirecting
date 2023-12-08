@@ -36,13 +36,13 @@ namespace TFTDirecting.Logging
 
         private async void FileLog(string strLog)
         {
-            var sb = new StringBuilder(strLog);
-            sb.AppendLine();
-            var targetstr = sb.ToString();
-            string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_" + _logLevel.ToString() + ".txt";
-            string filePath = _config.LogPath + "\\" + fileName;
-            File.AppendAllText(filePath, strLog);
-            await File.AppendAllTextAsync(filePath, targetstr);
+            //var sb = new StringBuilder(strLog);
+            //sb.AppendLine();
+            //var targetstr = sb.ToString();
+            //string fileName = DateTime.Now.ToString("yyyy-MM-dd") + "_" + _logLevel.ToString() + "23.txt";
+            //string filePath = _config.LogPath + "\\" + fileName;
+            //File.AppendAllText(filePath, strLog);
+            //await File.AppendAllTextAsync(filePath, targetstr);
         }
     }
 

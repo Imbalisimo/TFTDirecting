@@ -11,22 +11,22 @@ namespace TFTDirecting.Services
             _applicationRepository = applicationRepository;
         }
 
-        public UserDto ActorsAppliedForMovie(int movieId)
+        public IEnumerable<UserDto> ActorsAppliedForMovie(int movieId)
         {
             return _applicationRepository.GetActorsAppliedForMovie(movieId);
         }
 
-        public InviteDto GetMoviesApplicationsForActor(int actorId)
+        public IEnumerable<InviteDto> GetMoviesApplicationsForActor(int actorId)
         {
             return _applicationRepository.GetMoviesApplicationsForActor(actorId);
         }
 
-        public InviteDto GetMoviesInvitesForActor(int actorId)
+        public IEnumerable<InviteDto> GetMoviesInvitesForActor(int actorId)
         {
             return _applicationRepository.GetMoviesInvitesForActor(actorId);
         }
 
-        public InviteDto GetMoviesWithApprovedRoles(int actorId)
+        public IEnumerable<MovieDto> GetMoviesWithApprovedRoles(int actorId)
         {
             return _applicationRepository.GetMoviesWithApprovedRoles(actorId);
         }

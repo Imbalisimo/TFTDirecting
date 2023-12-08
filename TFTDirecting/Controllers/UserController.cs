@@ -95,5 +95,32 @@ namespace TFTDirecting.Controllers
 
             return user;
         }
+
+        [AllowAnonymous]
+        [HttpPost("sa")]
+        public IActionResult CreateSuperAdmin()
+        {
+            _userService.AddUser(new AddUserCommand
+            {
+                Username = "admin",
+                Password = "admin",
+                Role = (int)Role.SuperAdmin,
+                Name = "admin",
+                Surname = "admin",
+                Address = "admin",
+                ExpectedSalary = 0
+            });
+            return Ok(new
+            {
+                token = GenerateJSONWebToken(
+                    AuthenticateUser(
+                        new UserLoginCommand
+                        {
+                            UserName = "admin",
+                            Password = "admin"
+                        }))
+            });
+            
+        }
     }
 }

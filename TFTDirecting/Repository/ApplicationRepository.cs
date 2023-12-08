@@ -1,28 +1,65 @@
 ﻿using TFTDirecting.Contracts;
+using TFTDirecting.Database;
 using TFTDirecting.Dtos;
 
 namespace TFTDirecting.Repository
 {
     public class ApplicationRepository : IApplicationRepository
     {
-        public UserDto GetActorsAppliedForMovie(int movieId)
+        private readonly IConfiguration _config;
+        public ApplicationRepository(IConfiguration config)
         {
-            throw new NotImplementedException();
+            _config = config;
         }
 
-        public InviteDto GetMoviesApplicationsForActor(int actorId)
+        public IEnumerable<UserDto> GetActorsAppliedForMovie(int movieId)
         {
-            throw new NotImplementedException();
+            using (var db = new MoviesDbContext(_config))
+            {
+                return (from application in db.ActorMovieApplications
+                       where application.MovieId == movieId
+                       from actor in db.Users
+                       where actor.Id == application.ActorId
+                       select new UserDto(actor)).AsEnumerable();
+            }
         }
 
-        public InviteDto GetMoviesInvitesForActor(int actorId)
+        public IEnumerable<InviteDto> GetMoviesApplicationsForActor(int actorId)
         {
-            throw new NotImplementedException();
+            using (var db = new MoviesDbContext(_config))
+            {
+                return (from application in db.ActorMovieApplications
+                        where application.ActorId == actorId &&
+                            application.IsAcceptedByActor &&
+                            !application.IsAcceptedByDirector
+                        select new InviteDto(application)).AsEnumerable();
+            }
         }
 
-        public InviteDto GetMoviesWithApprovedRoles(int actorId)
+        public IEnumerable<InviteDto> GetMoviesInvitesForActor(int actorId)
         {
-            throw new NotImplementedException();
+            using (var db = new MoviesDbContext(_config))
+            {
+                return (from application in db.ActorMovieApplications
+                        where application.ActorId == actorId &&
+                            !application.IsAcceptedByActor &&
+                            application.IsAcceptedByDirector
+                        select new InviteDto(application)).AsEnumerable();
+            }
+        }
+
+        public IEnumerable<MovieDto> GetMoviesWithApprovedRoles(int actorId)
+        {
+            using (var db = new MoviesDbContext(_config))
+            {
+                return (from application in db.ActorMovieApplications
+                        where application.ActorId == actorId &&
+                            application.IsAcceptedByActor &&
+                            application.IsAcceptedByDirector
+                        from movie in db.Movies
+                        where movie.Id == application.MovieId
+                        select new MovieDto(movie)).AsEnumerable();
+            }
         }
     }
 }

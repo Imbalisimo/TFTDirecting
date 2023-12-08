@@ -21,12 +21,12 @@ namespace TFTDirecting.Services
         public void Delete(int genreId)
         {
             var genre = _genreRepository.GetById(genreId);
-            _genreRepository.Delete(genre);
+            _genreRepository.Delete(genre.ToGenre());
         }
 
         public void Update(int genreId, UpdateGenreCommand command)
         {
-            _genreRepository.Update(command);
+            _genreRepository.Update(genreId, command);
         }
     }
 }
