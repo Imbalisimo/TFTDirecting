@@ -43,5 +43,15 @@ namespace TFTDirecting.Services
         {
             _movieRepository.Update(movieId, command);
         }
+
+        public void UpdateGenres(int movieId, UpdateMovieGenresCommand command)
+        {
+            _movieRepository.UpdateGenres(movieId, command);
+        }
+
+        public void UpdateActors(int movieId, UpdateMovieActorsCommand command)
+        {
+            _movieRepository.UpdateActors(movieId, command);
+        }
     }
 }

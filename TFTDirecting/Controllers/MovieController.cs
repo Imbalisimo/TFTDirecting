@@ -31,7 +31,7 @@ namespace TFTDirecting.Controllers
             return Ok(_movieService.GetMovieById(movieId));
         }
 
-        [RoleAuthorize(Role.Actor)]
+        [RoleAuthorize(Role.Director | Role.Actor)]
         [HttpGet("director/{directorId}")] // 1. Direktor; a. Pregled svih mojih filmova; ii. Filtriranje filma prema žanrovima/budžetu/datumu početka/datumu kraja
         // 2. Glumac; e. Pregled svih filmova od pojedinog direktora; i. Filtriranje prema žanru/datumu početka/datumu kraja
         public IActionResult GetMoviesByDirector(int directorId, [FromBody] MovieFilter filter)
@@ -39,7 +39,7 @@ namespace TFTDirecting.Controllers
             return Ok(_movieService.GetMoviesByDirector(directorId, filter));
         }
 
-        [RoleAuthorize(Role.Director)]
+        [RoleAuthorize(Role.SuperAdmin | Role.Director)]
         [HttpPost] // 1. Direktor; c. Kreiranje Filma
         public IActionResult AddNewMovie([FromBody] AddMovieCommand command)
         {
@@ -47,7 +47,7 @@ namespace TFTDirecting.Controllers
             return Ok();
         }
 
-        [RoleAuthorize(Role.Director)]
+        [RoleAuthorize(Role.SuperAdmin | Role.Director)]
         [HttpPut("{movieId}")] // 1. Direktor; e. Ažuriranje Filma
         public IActionResult UpdateMovie(int movieId, [FromBody] UpdateMovieCommand command)
         {
@@ -55,7 +55,23 @@ namespace TFTDirecting.Controllers
             return Ok();
         }
 
-        [RoleAuthorize(Role.Director)]
+        [RoleAuthorize(Role.SuperAdmin | Role.Director)]
+        [HttpPut("{movieId}")] // 1. Direktor; e. Ažuriranje Filma
+        public IActionResult UpdateMovieGenre(int movieId, [FromBody] UpdateMovieGenresCommand command)
+        {
+            _movieService.UpdateGenres(movieId, command);
+            return Ok();
+        }
+
+        [RoleAuthorize(Role.SuperAdmin | Role.Director)]
+        [HttpPut("{movieId}")] // 1. Direktor; e. Ažuriranje Filma
+        public IActionResult UpdateMovieActors(int movieId, [FromBody] UpdateMovieActorsCommand command)
+        {
+            _movieService.UpdateActors(movieId, command);
+            return Ok();
+        }
+
+        [RoleAuthorize(Role.SuperAdmin | Role.Director)]
         [HttpDelete("{movieId}")] // 1. Direktor; d. Brisanje Filma
         public IActionResult Delete(int movieId)
         {

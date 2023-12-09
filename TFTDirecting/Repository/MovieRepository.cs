@@ -18,7 +18,7 @@ namespace TFTDirecting.Repository
         {
             using (var db = new MoviesDbContext(_config))
             {
-                db.Movies.Add(command.ToMovie(0));
+                db.Movies.Add(command.ToMovie());
                 db.SaveChanges();
             }
         }
@@ -96,6 +96,38 @@ namespace TFTDirecting.Repository
                                     select movie).SingleOrDefault();
 
                 command.UpdateMovie(updatingMovie);
+                db.SaveChanges();
+            }
+        }
+
+        public void UpdateActors(int movieId, UpdateMovieActorsCommand command)
+        {
+            using (var db = new MoviesDbContext(_config))
+            {
+                var newActors = from actor in db.Users
+                                where command.Actors.Any((id) => id == actor.Id)
+                                select actor;
+                var updatingMovie = (from movie in db.Movies
+                                     where movie.Id == movieId
+                                     select movie).SingleOrDefault();
+
+                updatingMovie.Actors = newActors.ToList();
+                db.SaveChanges();
+            }
+        }
+
+        public void UpdateGenres(int movieId, UpdateMovieGenresCommand command)
+        {
+            using (var db = new MoviesDbContext(_config))
+            {
+                var newGenres = from genre in db.Genres
+                                where command.Genres.Any((id) => id == genre.Id)
+                                select genre;
+                var updatingMovie = (from movie in db.Movies
+                                     where movie.Id == movieId
+                                     select movie).SingleOrDefault();
+
+                updatingMovie.Genres = newGenres.ToList();
                 db.SaveChanges();
             }
         }

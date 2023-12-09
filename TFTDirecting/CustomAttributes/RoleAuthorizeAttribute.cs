@@ -8,21 +8,21 @@ using TFTDirecting.Enums;
 
 namespace TFTDirecting.CustomAttributes
 {
-    public class RoleAuthorizeAttribute: AuthorizeAttribute, IAuthorizationFilter
+    public class RoleAuthorizeAttribute: Attribute, IAuthorizationFilter
     {
-        private readonly Role requiredRole;
+        private readonly Role requiredRoles;
         public RoleAuthorizeAttribute(Role role)
         {
-            requiredRole = role;
+            requiredRoles = role;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var hasClaim = context.HttpContext.User.Claims.Any(c => c.Type == ClaimTypes.Role);
-            if (!hasClaim)
+            if (hasClaim)
             {
                 var userRole = (Role)Int32.Parse(context.HttpContext.User.Claims.First().Value);
-                if (userRole > requiredRole)
+                if (!requiredRoles.HasFlag(userRole))
                 {
                     context.Result = new UnauthorizedObjectResult(string.Empty);
                     return;
@@ -35,10 +35,11 @@ namespace TFTDirecting.CustomAttributes
         }
     }
 
+    [Flags]
     public enum Role
     {
-        SuperAdmin = 0,
-        Director = 1,
-        Actor = 2
+        SuperAdmin = 1,
+        Director = 1 << 1,
+        Actor = 1 << 2
     }
 }

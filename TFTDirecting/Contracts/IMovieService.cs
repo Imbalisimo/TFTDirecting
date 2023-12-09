@@ -13,6 +13,8 @@ namespace TFTDirecting.Contracts
         IEnumerable<MovieDto> GetMoviesByDirector(int directorId, MovieFilter filter);
         void Add(AddMovieCommand command);
         void Update(int movieId, UpdateMovieCommand command);
+        void UpdateGenres(int movieId, UpdateMovieGenresCommand command);
+        void UpdateActors(int movieId, UpdateMovieActorsCommand command);
         void Delete(int movieId);
     }
 }
