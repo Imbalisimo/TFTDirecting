@@ -20,7 +20,7 @@ namespace TFTDirecting.Repository
                        where application.MovieId == movieId
                        from actor in db.Users
                        where actor.Id == application.ActorId
-                       select new UserDto(actor)).AsEnumerable();
+                       select new UserDto(actor)).ToList();
             }
         }
 
@@ -32,7 +32,7 @@ namespace TFTDirecting.Repository
                         where application.ActorId == actorId &&
                             application.IsAcceptedByActor &&
                             !application.IsAcceptedByDirector
-                        select new InviteDto(application)).AsEnumerable();
+                        select new InviteDto(application)).ToList();
             }
         }
 
@@ -44,7 +44,7 @@ namespace TFTDirecting.Repository
                         where application.ActorId == actorId &&
                             !application.IsAcceptedByActor &&
                             application.IsAcceptedByDirector
-                        select new InviteDto(application)).AsEnumerable();
+                        select new InviteDto(application)).ToList();
             }
         }
 
@@ -58,7 +58,7 @@ namespace TFTDirecting.Repository
                             application.IsAcceptedByDirector
                         from movie in db.Movies
                         where movie.Id == application.MovieId
-                        select new MovieDto(movie)).AsEnumerable();
+                        select new MovieDto(movie)).ToList();
             }
         }
     }

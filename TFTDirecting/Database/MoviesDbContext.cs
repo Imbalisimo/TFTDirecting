@@ -33,6 +33,10 @@ namespace TFTDirecting.Database
                 .WithMany()
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Movie>()
+                .HasMany(e => e.Genres)
+                .WithMany(e => e.Movies);
+
             base.OnModelCreating(modelBuilder);
         }
     }

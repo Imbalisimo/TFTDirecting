@@ -56,7 +56,7 @@ namespace TFTDirecting.Controllers
         }
 
         [RoleAuthorize(Role.SuperAdmin | Role.Director)]
-        [HttpPut("{movieId}")] // 1. Direktor; e. Ažuriranje Filma
+        [HttpPut("genres/{movieId}")] // 1. Direktor; e. Ažuriranje Filma
         public IActionResult UpdateMovieGenre(int movieId, [FromBody] UpdateMovieGenresCommand command)
         {
             _movieService.UpdateGenres(movieId, command);
@@ -64,7 +64,7 @@ namespace TFTDirecting.Controllers
         }
 
         [RoleAuthorize(Role.SuperAdmin | Role.Director)]
-        [HttpPut("{movieId}")] // 1. Direktor; e. Ažuriranje Filma
+        [HttpPut("actors/{movieId}")] // 1. Direktor; e. Ažuriranje Filma
         public IActionResult UpdateMovieActors(int movieId, [FromBody] UpdateMovieActorsCommand command)
         {
             _movieService.UpdateActors(movieId, command);

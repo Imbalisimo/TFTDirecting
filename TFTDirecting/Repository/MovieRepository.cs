@@ -1,4 +1,5 @@
-﻿using TFTDirecting.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using TFTDirecting.Commands;
 using TFTDirecting.Contracts;
 using TFTDirecting.Database;
 using TFTDirecting.Dtos;
@@ -48,26 +49,12 @@ namespace TFTDirecting.Repository
         {
             using (var db = new MoviesDbContext(_config))
             {
-                return (from genre in db.Genres
-                        where genre.Id == filter.Genre
-                        from movie in db.Movies
+                return (from movie in db.Movies.Include(g => g.Genres)
                         where filter.Budget != null ? movie.Budget == filter.Budget : true &&
                            filter.StartingDate != null ? movie.EndingDate >= filter.StartingDate : true &&
                            filter.EndingDate != null ? movie.EndingDate <= filter.EndingDate : true &&
-                           filter.Genre != null ? movie.Genres.Contains(genre) : true
-                        select new MovieDto(movie)).AsEnumerable<MovieDto>();
-                //movie.Genres.Contains(genre)
-                //select new MovieDto
-                //{
-                //    Id = movie.Id,
-                //    Name = movie.Name,
-                //    Description = movie.Description,
-                //    Duration = movie.Duration,
-                //    Budget = movie.Budget,
-                //    DirectorId = movie.DirectorId,
-                //    EndingDate = movie.EndingDate,
-                //    StartingDate = movie.StartingDate
-                //}).AsEnumerable<MovieDto>();
+                           filter.Genre != null ? movie.Genres.Any(genre => genre.Id == filter.Genre) : true
+                        select new MovieDto(movie)).ToList();
             }
         }
 
@@ -75,15 +62,13 @@ namespace TFTDirecting.Repository
         {
             using (var db = new MoviesDbContext(_config))
             {
-                return (from genre in db.Genres
-                        where genre.Id == filter.Genre
-                        from movie in db.Movies
+                return (from movie in db.Movies.Include(g => g.Genres)
                         where filter.Budget != null ? movie.Budget == filter.Budget : true &&
-                           filter.StartingDate != null ? movie.EndingDate >= filter.StartingDate: true &&
+                           filter.StartingDate != null ? movie.EndingDate >= filter.StartingDate : true &&
                            filter.EndingDate != null ? movie.EndingDate <= filter.EndingDate : true &&
-                           filter.Genre != null ? movie.Genres.Contains(genre) : true &&
+                           filter.Genre != null ? movie.Genres.Any(genre => genre.Id == filter.Genre) : true &&
                            movie.DirectorId == directorId
-                        select new MovieDto(movie)).AsEnumerable<MovieDto>();
+                        select new MovieDto(movie)).ToList();
             }
         }
 
@@ -107,7 +92,7 @@ namespace TFTDirecting.Repository
                 var newActors = from actor in db.Users
                                 where command.Actors.Any((id) => id == actor.Id)
                                 select actor;
-                var updatingMovie = (from movie in db.Movies
+                var updatingMovie = (from movie in db.Movies.Include(a => a.Actors)
                                      where movie.Id == movieId
                                      select movie).SingleOrDefault();
 
@@ -123,7 +108,7 @@ namespace TFTDirecting.Repository
                 var newGenres = from genre in db.Genres
                                 where command.Genres.Any((id) => id == genre.Id)
                                 select genre;
-                var updatingMovie = (from movie in db.Movies
+                var updatingMovie = (from movie in db.Movies.Include(g => g.Genres)
                                      where movie.Id == movieId
                                      select movie).SingleOrDefault();
 
