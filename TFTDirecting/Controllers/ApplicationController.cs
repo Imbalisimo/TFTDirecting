@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TFTDirecting.Commands;
 using TFTDirecting.Contracts;
 using TFTDirecting.CustomAttributes;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace TFTDirecting.Controllers
 {
@@ -42,6 +43,27 @@ namespace TFTDirecting.Controllers
         public IActionResult GetMoviesWithApprovedRoles(int actorId)
         {
             return Ok(_applicationService.GetMoviesWithApprovedRoles(actorId));
+        }
+
+        [RoleAuthorize(Role.SuperAdmin | Role.Director)]
+        [HttpPost("invite")]
+        public IActionResult InviteActor(InviteActorCommand command)
+        {
+            try
+            {
+                _applicationService.InviteActor(command);
+                return Ok();
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [RoleAuthorize(Role.Actor)]
+        [HttpGet("appliableMovies/{actorId}")]
+        public IActionResult GetAppliableMovies(int actorId)
+        {
+            return Ok(_applicationService.GetAppliableMovies(actorId));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using TFTDirecting.Database;
+﻿using TFTDirecting.Commands;
+using TFTDirecting.Database;
 using TFTDirecting.Dtos;
 
 namespace TFTDirecting.Contracts
@@ -9,5 +10,7 @@ namespace TFTDirecting.Contracts
         IEnumerable<InviteDto> GetMoviesInvitesForActor(int actorId);
         IEnumerable<InviteDto> GetMoviesApplicationsForActor(int actorId);
         IEnumerable<MovieDto> GetMoviesWithApprovedRoles(int actorId);
+        void InviteActor(InviteActorCommand command);
+        IEnumerable<MovieDto> GetAppliableMovies(int actorId);
     }
 }

@@ -1,4 +1,5 @@
-﻿using TFTDirecting.Contracts;
+﻿using TFTDirecting.Commands;
+using TFTDirecting.Contracts;
 using TFTDirecting.Dtos;
 
 namespace TFTDirecting.Services
@@ -29,6 +30,16 @@ namespace TFTDirecting.Services
         public IEnumerable<MovieDto> GetMoviesWithApprovedRoles(int actorId)
         {
             return _applicationRepository.GetMoviesWithApprovedRoles(actorId);
+        }
+
+        public void InviteActor(InviteActorCommand command)
+        {
+            _applicationRepository.InviteActor(command);
+        }
+
+        public IEnumerable<MovieDto> GetAppliableMovies(int actorId)
+        {
+            return _applicationRepository.GetAppliableMovies(actorId);
         }
     }
 }
