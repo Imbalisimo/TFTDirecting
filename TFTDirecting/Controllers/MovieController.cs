@@ -51,8 +51,15 @@ namespace TFTDirecting.Controllers
         [HttpPut("{movieId}")] // 1. Direktor; e. Ažuriranje Filma
         public IActionResult UpdateMovie(int movieId, [FromBody] UpdateMovieCommand command)
         {
-            _movieService.Update(movieId, command);
-            return Ok();
+            try
+            {
+                _movieService.Update(movieId, command);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [RoleAuthorize(Role.SuperAdmin | Role.Director)]

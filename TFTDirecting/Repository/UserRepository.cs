@@ -51,12 +51,31 @@ namespace TFTDirecting.Repository
         {
             using (var db = new MoviesDbContext(_config))
             {
-                var updatingUser = (from u in db.Users
-                                     where u.Id == actorId
-                                     select u).SingleOrDefault();
+                var isActorCurrentlyActing = IsActorCurrentlyActing(actorId);
 
-                command.UpdateUser(updatingUser);
-                db.SaveChanges();
+                if (isActorCurrentlyActing)
+                {
+                    var updatingUser = (from u in db.Users
+                                        where u.Id == actorId
+                                        select u).SingleOrDefault();
+
+                    command.UpdateUser(updatingUser);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Unable to update user as they are currenly starring in an ongoing movie");
+                }
+            }
+        }
+
+        public bool IsActorCurrentlyActing(int actorId)
+        {
+            using (var db = new MoviesDbContext(_config))
+            {
+                return (from movie in db.Movies
+                        where movie.Actors.Any(actor => actor.Id == actorId) && movie.EndingDate < DateTime.Now
+                        select movie).Any();
             }
         }
     }

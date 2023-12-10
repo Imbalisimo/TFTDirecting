@@ -10,9 +10,11 @@ namespace TFTDirecting.Repository
     public class ApplicationRepository : IApplicationRepository
     {
         private readonly IConfiguration _config;
-        public ApplicationRepository(IConfiguration config)
+        private readonly IMovieRepository _movieRepository;
+        public ApplicationRepository(IConfiguration config, IMovieRepository movieRepository)
         {
             _config = config;
+            _movieRepository = movieRepository;
         }
 
         public IEnumerable<UserDto> GetActorsAppliedForMovie(int movieId)
@@ -104,11 +106,7 @@ namespace TFTDirecting.Repository
                                    select actor).SingleOrDefault();
 
                 return from movie in db.Movies
-                       where movie.Budget - intendedActor.ExpectedSalary >
-                          (from app in db.ActorMovieApplications
-                           where app.MovieId == movie.Id
-                           join actor in db.Users on app.ActorId equals actor.Id
-                           select actor.ExpectedSalary).Sum()
+                       where movie.Budget - intendedActor.ExpectedSalary >= _movieRepository.GetExpectedMovieCost(movie.Id)
                        select new MovieDto(movie);
             }
         }

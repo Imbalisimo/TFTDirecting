@@ -10,6 +10,7 @@ namespace TFTDirecting.Contracts
         void Update(int movieId, UpdateMovieCommand command);
         void UpdateGenres(int movieId, UpdateMovieGenresCommand command);
         void UpdateActors(int movieId, UpdateMovieActorsCommand command);
+        double GetExpectedMovieCost(int movieId);
         void Delete(Movie movie);
         IEnumerable<MovieDto> GetMoviesByDirector(int directorId, MovieFilter filter);
         MovieDto GetMovieById(int movieId);

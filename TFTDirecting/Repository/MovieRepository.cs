@@ -76,12 +76,37 @@ namespace TFTDirecting.Repository
         {
             using (var db = new MoviesDbContext(_config))
             {
+                if (command.StartingDate != null)
+                {
+                    var isExpenseHigherThanBudget = (from movie in db.Movies
+                                                     where movie.Budget > GetExpectedMovieCost(movie.Id)
+                                                     select movie).Any();
+
+                    if (isExpenseHigherThanBudget)
+                    {
+                        throw new Exception("Actors' salary cost higher than the movie budget!");
+                    }
+                }
+
                 var updatingMovie = (from movie in db.Movies
                                     where movie.Id == movieId
                                     select movie).SingleOrDefault();
 
                 command.UpdateMovie(updatingMovie);
                 db.SaveChanges();
+            }
+        }
+
+        public double GetExpectedMovieCost(int movieId)
+        {
+            using (var db = new MoviesDbContext(_config))
+            {
+                return (from app in db.ActorMovieApplications
+                        where app.MovieId == movieId &&
+                            app.IsAcceptedByDirector &&
+                            app.IsAcceptedByActor
+                        join actor in db.Users on app.ActorId equals actor.Id
+                        select actor.ExpectedSalary).Sum();
             }
         }
 
